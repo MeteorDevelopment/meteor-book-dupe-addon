@@ -1,6 +1,6 @@
 # Meteor Book Dupe Addon
 
-An addon to Meteor Client that adds the (player data overload) `.dupe` command.
+An addon to Meteor Client that adds the (player data overload) `.dupe` command. 
 
 ### How to use:
 - Download either the latest release from the [releases tab](https://github.com/MeteorDevelopment/meteor-book-dupe-addon/releases/latest).  
