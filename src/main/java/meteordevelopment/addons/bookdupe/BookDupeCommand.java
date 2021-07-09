@@ -5,28 +5,25 @@ import meteordevelopment.meteorclient.systems.commands.Command;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import net.minecraft.command.CommandSource;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 //Credit to the original author (https://github.com/Gaider10/BookDupe) (i think) for some of this code.
 public class BookDupeCommand extends Command {
-    private static final ItemStack DUPE_BOOK;
+    private static final List<String> DUPE_PAGES;
 
     static {
-        NbtList pages = new NbtList();
-        pages.addElement(0, NbtString.of("ࠀ".repeat(21845)));
-        for (int i = 1; i < 40; i++) pages.addElement(i, NbtString.of("a".repeat(256)));
+        List<String> pages = new ArrayList<>();
+        pages.add(0, "ࠀ".repeat(21845));
+        for (int i = 1; i < 40; i++) pages.add(i, "a".repeat(256));
 
-        DUPE_BOOK = new ItemStack(Items.WRITABLE_BOOK, 1);
-
-        DUPE_BOOK.putSubTag("title", NbtString.of("Dupe Book"));
-        DUPE_BOOK.putSubTag("author", NbtString.of("Meteor Client"));
-        DUPE_BOOK.putSubTag("pages", pages);
+        DUPE_PAGES = pages;
     }
 
     public BookDupeCommand() {
@@ -41,7 +38,7 @@ public class BookDupeCommand extends Command {
                 error("No book found, you must be holding a writable book!");
             } else {
                 int i = book.isMainHand() ? mc.player.getInventory().selectedSlot : 40;
-                mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, i));
+                mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(i, DUPE_PAGES, Optional.of("Dupe Book")));
             }
 
             return SINGLE_SUCCESS;
